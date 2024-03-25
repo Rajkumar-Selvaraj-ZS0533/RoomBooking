@@ -1,0 +1,30 @@
+<h1>{{user.id==null? 'Add': 'Edit'}} User</h1>
+
+<div class="bg-warning p-5" *ngIf="message">{{message}}</div>
+
+<form #userForm="ngForm">
+
+  <div class="form-group">
+    <label for="name">Name</label>
+    <input type="text" class="form-control" id="name" placeholder="user name" [(ngModel)]="formUser.name" name="name" 
+    required #nameField="ngModel" (change)="checkNameIsValid()">
+    <div *ngIf="nameField.touched&& nameField.invalid" class="alert alert-danger">Name is required</div>
+    <div *ngIf="nameField.touched&& !nameIsValid" class="alert alert-danger">Name cannot be blank</div>
+
+  </div>
+
+  <div class="form-group" *ngIf="user.id==null"> <!-- only show this field on adding a user -->
+    <label for="password">Password</label>
+    <input type="password" class="form-control" id="password" placeholder="password" name="password" 
+    [(ngModel)]="password" (change)="checkPasswordIsValid()" required #pass1="ngModel">
+    <div class="alert alert-danger" *ngIf="pass1.touched && pass1.invalid">Password Required</div>
+    <div class="alert alert-danger" *ngIf="pass1.touched && !passwordAreValid">Password Can not be blank</div>
+    
+    <label for="password2">Repeat Password</label>
+    <input type="password" class="form-control" id="password2" placeholder="password" name="password2" 
+    [(ngModel)]="password2" (change)="checkPasswordIsValid()" required #pass2="ngModel">
+    <div class="alert alert-danger" *ngIf="pass2.touched && !passwordMatch">Password must match</div>
+  </div>
+  
+  <button type="button" class="btn btn-primary" (click)="onSubmit()" [disabled]="userForm.invalid || !nameIsValid || !passwordAreValid || !passwordMatch">Save</button>
+</form>
